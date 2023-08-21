@@ -15,6 +15,10 @@ def record_ip():
     ip_list.append(ip_address)
     return jsonify({"message": "IP recorded successfully."})
 
+@app.route('/api/get_ips', methods=['GET'])
+def get_ips():
+    return jsonify({"ip_list": ip_list})
+
 if __name__ == '__main__':
     app.run(debug=True)
 
