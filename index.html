@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Obtener IP del visitante</title>
+</head>
+<body>
+    <h1>Tu dirección IP es: <span id="ip-address"></span></h1>
+
+    <script>
+        // Función para obtener la dirección IP del visitante
+        function getVisitorIP() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const ipAddress = data.ip;
+                    document.getElementById('ip-address').textContent = ipAddress;
+                    sendIPToServer(ipAddress);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Función para enviar la dirección IP al servidor
+        function sendIPToServer(ipAddress) {
+            fetch('/api/record_ip', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ip: ipAddress })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Llamar a la función al cargar la página
+        getVisitorIP();
+    </script>
+</body>
+</html>
